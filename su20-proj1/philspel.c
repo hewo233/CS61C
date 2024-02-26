@@ -11,6 +11,7 @@
 /*
  * Standard IO and file routines.
  */
+#include <stddef.h>
 #include <stdio.h>
 
 /*
@@ -43,6 +44,8 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Specify a dictionary\n");
     return 0;
   }
+
+  //fprintf(stderr, "Wirting to myOUT");
   /*
    * Allocate a hash table to store the dictionary.
    */
@@ -51,6 +54,7 @@ int main(int argc, char **argv) {
 
   fprintf(stderr, "Loading dictionary %s\n", argv[1]);
   readDictionary(argv[1]);
+  //printf("DICTION: %p\n", (char *)dictionary->data[789]);
   fprintf(stderr, "Dictionary loaded\n");
 
   fprintf(stderr, "Processing stdin\n");
@@ -70,6 +74,16 @@ int main(int argc, char **argv) {
  */
 unsigned int stringHash(void *s) {
   char *string = (char *)s;
+  unsigned int h = 0;
+  while (*string) {
+    h = (h << 4) + *string++;
+    unsigned int g = h & 0xF0000000;
+    if (g) {
+      h ^= g >> 24;
+    }
+    h &= ~g;
+  }
+  return h;
   // -- TODO --
 }
 
@@ -81,6 +95,8 @@ int stringEquals(void *s1, void *s2) {
   char *string1 = (char *)s1;
   char *string2 = (char *)s2;
   // -- TODO --
+  //printf("EQUALS: %s \n %s\n\n", string1, string2);
+  return strcmp(string1, string2) == 0;
 }
 
 /*
@@ -101,8 +117,21 @@ int stringEquals(void *s1, void *s2) {
  */
 void readDictionary(char *dictName) {
   // -- TODO --
+  FILE *file = fopen(dictName, "r");
+  if (file == NULL) {
+    printf("Dictionary file not found\n");
+    exit(1);
+  }
+  char *word = (char *)malloc(60 * sizeof(char));
+  while(fscanf(file, "%s", word) != EOF) {
+    //printf("word WROOOOOOO: %s\n", word);
+    insertData(dictionary, (void *)word, (void *)word);
+    word = (char *)malloc(60 * sizeof(char));
+  }
+  fclose(file);
 }
 
+void deal(char *s,size_t *len ,size_t *caplen, char c,int last);
 /*
  * This should process standard input (stdin) and copy it to standard
  * output (stdout) as specified in the spec (e.g., if a standard 
@@ -124,6 +153,75 @@ void readDictionary(char *dictName) {
  * numbers and punctuation) which are longer than 60 characters. Again, for the 
  * final 20% of your grade, you cannot assume words have a bounded length.
  */
+
+int check(char *s);
+
 void processInput() {
   // -- TODO --
+  //printf("Processing input\n");
+
+  char *test = "this";
+  //printf("testANSSSSSS is %d\n", check(test));
+
+  char *input = NULL;
+  size_t inputSize = 0, inputCapacity = 0;
+
+  char c;
+  while( (c = getchar()) != EOF ) {
+    //printf("c: %c\n", c);
+    if(inputSize >= inputCapacity) {
+      inputCapacity += 10;
+      input = realloc(input, inputCapacity * sizeof(char));
+      if (input == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+      }
+    }
+    //printf("deal begin: ");
+    //printf("%c %zu\n",c, inputSize);
+    deal(input, &inputSize, &inputCapacity ,c, 0);
+  }
+  deal(input, &inputSize, &inputCapacity, '\0', 1);
+}
+
+int check(char *s) {
+  //printf("checks is : %s\n", s);
+  int *result = (int *)findData(dictionary, (void *)s);
+  if(result == NULL) return 0;
+  return 1;
+}
+
+void deal(char *s,size_t *len, size_t *caplen, char c, int last) {
+  //printf("deal\n");
+  if( (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ) {
+    s[(*len)++] = c;
+  } else {
+    //printf("%zu", *len);
+    if(*len == 0) {
+      if(last == 0) printf("%c", c);
+      return ;
+    }
+    s[*len] = '\0';
+    char *oris = (char *)malloc((*len + 1) * sizeof(char));
+    strcpy(oris, s);
+    //printf("\n SSoris is :%s\n\n", oris);
+    //printf("s is %s\n", s);
+    int finded = 0;
+    finded += check(s);
+    for(int i = 1; i < *len; i++) {
+      if(s[i] >= 'A' && s[i] <= 'Z') s[i] += 32;
+    }
+    finded += check(s);
+    if(s[0] >= 'A' && s[0] <= 'Z') s[0] += 32;
+    finded += check(s);
+    if(finded == 0) {
+      printf("%s [sic]", oris);
+    } else {
+      printf("%s", oris);
+    }
+    *len = 0;
+    *caplen = 0;
+    s = NULL;
+    if(last == 0) printf("%c", c);
+  }
 }
