@@ -9,6 +9,7 @@ main:
     lw a0, 0(t0)
     jal ra, factorial
 
+    mv a0, a1
     addi a1, a0, 0
     addi a0, x0, 1
     ecall # Print Result
@@ -21,16 +22,27 @@ main:
     ecall # Exit
 
 factorial:
-    # YOUR CODE HERE
-    li t0, 1
-    li t1, 1
-    loop: 
-        beq a0, t0, end
-        mul t1, t1, a0
-        addi a0, a0, -1
-        j loop
-    end:
-        mv a0, t1
-        jr ra
+    addi sp, sp, -8
+    sw ra, 0(sp)
 
+    li t0, 1
+    ble a0, t0, ret_one
+
+    sw a0, 4(sp)
+
+    addi a0, a0, -1
+    jal factorial
+
+    lw t0, 4(sp)
+    mul a1, t0, a1
+
+    lw ra, 0(sp)
+    addi sp, sp, 8
+    jr ra
+
+ret_one:
+    li a1, 1
+    lw ra, 0(sp)
+    addi sp, sp, 8
+    jr ra
     
