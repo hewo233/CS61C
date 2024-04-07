@@ -26,28 +26,32 @@ temp_array: .space 400
 # =======================================================
 matmul:
 
-    addi sp, sp, -4
-    sw ra, 0(sp)
-
     # Error checks
     li t0, 1
+    beq a0, zero, error_exit_2
     blt a1, t0, error_exit_2
     blt a2, t0, error_exit_2
 
+    beq a3, zero, error_exit_3
     blt a4, t0, error_exit_3
     blt a5, t0, error_exit_3
 
     bne a2, a4, error_exit_4
-    bne a1, a5, error_exit_4
     
 
     # Prologue
 
+    addi sp, sp, -8
+    sw ra, 0(sp)
+    sw s0, 4(sp)
+
     li t0, 0 # i = 0
     li t1, 0 # j = 0
 
-    mv t3, a3 # save m1 address
+    li t2, 4
+    mul t2, t2, a2
 
+    mv s0, a3 # save m1 address
 
 outer_loop_start:
 
@@ -55,7 +59,7 @@ outer_loop_start:
 
 inner_loop_start:
 
-    bge t1, a2, inner_loop_end # if j >= a2, goto inner_loop_end
+    bge t1, a5, inner_loop_end # if j >= a2, goto inner_loop_end
 
     addi sp, sp, -48
     sw a0, 0(sp)
@@ -104,31 +108,28 @@ inner_loop_start:
 inner_loop_end:
 
     addi t0, t0, 1 # i++
-    li t2, 4
-    mul t2, t2, a2
 
     add a0, a0, t2 # a0 -> next row
-    mv a3, t3
+    mv a3, s0
     li t1, 0 # j = 0
 
     j outer_loop_start
 
-error_exit_2:
-    li a1, 2
-    ret
-
-error_exit_3:
-    li a1, 3
-    ret
-
-error_exit_4:
-    li a1, 4
-    ret
-
 outer_loop_end:
     
     lw ra, 0(sp)
-    addi sp, sp, 4
+    lw s0, 4(sp)
+    addi sp, sp, 8
     jr ra
 
+error_exit_2:
+    li a1, 2
+    j exit2
 
+error_exit_3:
+    li a1, 3
+    j exit2
+
+error_exit_4:
+    li a1, 4
+    j exit2

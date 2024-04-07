@@ -52,7 +52,7 @@ read_matrix:
 
     li a0, 8
     jal ra, malloc
-    beq a0, x0, error_53
+    beq a0, x0, error_49
     mv s4, a0 # s4 is the pointer to row and col
 
 	mv a1, s3
@@ -75,7 +75,7 @@ read_matrix:
 
     mv a0, t0
     jal ra, malloc
-    beq a0, x0, error_53
+    beq a0, x0, error_49
     mv s4, a0
 
     mv a1, s3
@@ -118,6 +118,6 @@ error_52:
     li a1, 52
     jal exit2
 
-error_53:
-    li a1, 53
+error_49:
+    li a1, 49
     jal exit2

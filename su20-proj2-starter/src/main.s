@@ -14,3 +14,7 @@
 main:
     jal classify
     jal exit
+
+exit_48_1:
+    li a1, 481
+    jal exit2
