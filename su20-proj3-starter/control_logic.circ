@@ -167,10 +167,10 @@
       <text fill="#404040" font-family="Dialog" font-size="12" text-anchor="end" x="1132" y="49">ASel</text>
       <text fill="#404040" font-family="Dialog" font-size="12" text-anchor="end" x="1182" y="49">BSel</text>
       <circ-port height="10" pin="670,210" width="10" x="1165" y="25"/>
-      <circ-port height="10" pin="620,210" width="10" x="1115" y="25"/>
       <circ-port height="10" pin="570,210" width="10" x="925" y="25"/>
-      <circ-port height="10" pin="500,210" width="10" x="575" y="25"/>
       <circ-port height="10" pin="420,210" width="10" x="495" y="25"/>
+      <circ-port height="10" pin="500,210" width="10" x="575" y="25"/>
+      <circ-port height="10" pin="620,210" width="10" x="1115" y="25"/>
       <circ-port height="10" pin="350,210" width="10" x="55" y="25"/>
       <circ-port height="8" pin="250,210" width="8" x="1006" y="26"/>
       <circ-port height="8" pin="200,210" width="8" x="966" y="26"/>
@@ -184,8 +184,12 @@
       <rect fill="none" height="40" rx="10" ry="10" stroke="#000000" stroke-width="2" width="1740" x="30" y="30"/>
       <circ-anchor facing="north" height="6" width="6" x="57" y="27"/>
     </appear>
+    <wire from="(520,580)" to="(520,590)"/>
     <wire from="(70,100)" to="(70,230)"/>
     <wire from="(280,100)" to="(280,230)"/>
+    <wire from="(450,580)" to="(450,590)"/>
+    <wire from="(370,580)" to="(370,590)"/>
+    <wire from="(300,570)" to="(300,590)"/>
     <wire from="(350,210)" to="(350,230)"/>
     <wire from="(420,210)" to="(420,230)"/>
     <wire from="(500,210)" to="(500,230)"/>
@@ -195,15 +199,20 @@
     <wire from="(200,210)" to="(200,230)"/>
     <wire from="(250,210)" to="(250,230)"/>
     <wire from="(810,210)" to="(810,230)"/>
+    <wire from="(830,570)" to="(830,590)"/>
     <wire from="(70,230)" to="(110,230)"/>
     <wire from="(880,210)" to="(880,230)"/>
     <wire from="(310,150)" to="(920,150)"/>
     <wire from="(570,210)" to="(570,230)"/>
+    <wire from="(570,570)" to="(570,590)"/>
     <wire from="(620,210)" to="(620,230)"/>
+    <wire from="(620,570)" to="(620,590)"/>
     <wire from="(670,210)" to="(670,230)"/>
     <wire from="(920,150)" to="(920,230)"/>
     <wire from="(440,230)" to="(480,230)"/>
+    <wire from="(680,570)" to="(680,590)"/>
     <wire from="(730,210)" to="(730,230)"/>
+    <wire from="(760,570)" to="(760,590)"/>
     <wire from="(150,230)" to="(180,230)"/>
     <wire from="(900,230)" to="(920,230)"/>
     <wire from="(520,230)" to="(550,230)"/>
@@ -212,7 +221,9 @@
     <wire from="(310,230)" to="(330,230)"/>
     <wire from="(830,230)" to="(860,230)"/>
     <wire from="(70,100)" to="(280,100)"/>
+    <wire from="(440,580)" to="(450,580)"/>
     <wire from="(270,230)" to="(280,230)"/>
+    <wire from="(360,580)" to="(370,580)"/>
     <wire from="(220,230)" to="(230,230)"/>
     <wire from="(590,230)" to="(600,230)"/>
     <wire from="(640,230)" to="(650,230)"/>
@@ -349,6 +360,75 @@
     </comp>
     <comp lib="5" loc="(606,143)" name="Text">
       <a name="text" val="OUTPUT from your circuit"/>
+    </comp>
+    <comp lib="0" loc="(830,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="width" val="2"/>
+      <a name="label" val="WBSel"/>
+    </comp>
+    <comp lib="0" loc="(300,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="PCSel"/>
+    </comp>
+    <comp lib="0" loc="(680,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="width" val="4"/>
+      <a name="label" val="ALUSel"/>
+    </comp>
+    <comp lib="0" loc="(370,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="RegWEn"/>
+    </comp>
+    <comp lib="0" loc="(450,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="width" val="3"/>
+      <a name="label" val="ImmSel"/>
+    </comp>
+    <comp lib="0" loc="(520,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="BrUn"/>
+    </comp>
+    <comp lib="0" loc="(760,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="MemRW"/>
+    </comp>
+    <comp lib="0" loc="(620,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="BSel"/>
+    </comp>
+    <comp lib="0" loc="(570,590)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="ASel"/>
+    </comp>
+    <comp lib="0" loc="(300,570)" name="Constant">
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(360,580)" name="Constant">
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(440,580)" name="Constant">
+      <a name="width" val="3"/>
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(520,580)" name="Constant">
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(570,570)" name="Constant">
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(620,570)" name="Constant">
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(680,570)" name="Constant">
+      <a name="width" val="4"/>
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(760,570)" name="Constant">
+      <a name="value" val="0x0"/>
+    </comp>
+    <comp lib="0" loc="(830,570)" name="Constant">
+      <a name="width" val="2"/>
+      <a name="value" val="0x0"/>
     </comp>
   </circuit>
 </project>
