@@ -16,18 +16,26 @@ void v_add_naive(double* x, double* y, double* z) {
 
 // Edit this function (Method 1) 
 void v_add_optimized_adjacent(double* x, double* y, double* z) {
-     #pragma omp parallel
+    #pragma omp parallel 
 	{
-		for(int i=0; i<ARRAY_SIZE; i++)
+		int thread_nums = omp_get_num_threads();
+		int thread_ID = omp_get_thread_num();
+		for(int i=thread_ID; i<ARRAY_SIZE; i+=thread_nums)
 			z[i] = x[i] + y[i];
 	}
 }
 
 // Edit this function (Method 2) 
 void v_add_optimized_chunks(double* x, double* y, double* z) {
-          #pragma omp parallel
+    #pragma omp parallel
 	{
-		for(int i=0; i<ARRAY_SIZE; i++)
+		int thread_nums = omp_get_num_threads();
+		int chunk_size = ARRAY_SIZE / thread_nums;
+		int start = omp_get_thread_num() * chunk_size;
+		int end = start + chunk_size;
+		if(omp_get_thread_num() == thread_nums - 1)
+			end = ARRAY_SIZE;
+		for(int i=start; i<end; i++)
 			z[i] = x[i] + y[i];
 	}
 }
